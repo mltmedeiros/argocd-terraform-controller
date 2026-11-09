@@ -1,0 +1,20 @@
+apiVersion: infra.argocd.io/v1alpha1
+kind: Terraform
+metadata:
+  name: network
+  namespace: terraform
+  labels:
+    app.kubernetes.io/instance: guestbook
+spec:
+  source:
+    git:
+      url: https://github.com/redhat-developer/argocd-terraform-controller.git
+      ref:
+        branch: main
+  path: ./examples/kube-namespace
+  interval: 10m
+  approvePlan: ""          # manual: approve in the UI or set the plan ID here
+  runner:
+    binary: tofu
+  writeOutputsToSecret:
+    name: network-outputs
